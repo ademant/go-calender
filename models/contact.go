@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
-	u "go-contacts/utils"
+	u "go-calender/utils"
 )
 
 type Contact struct {
