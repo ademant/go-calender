@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"go-contacts/app"
-	"go-contacts/controllers"
+	"go-calender/app"
+	"go-calender/controllers"
 	"net/http"
 	"os"
 )
