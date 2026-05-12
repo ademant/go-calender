@@ -5,6 +5,7 @@ import (
 	"go-calender/models"
 	u "go-calender/utils"
 	"net/http"
+	"fmt"
 )
 
 var CreateContact = func(w http.ResponseWriter, r *http.Request) {
@@ -23,10 +24,12 @@ var CreateContact = func(w http.ResponseWriter, r *http.Request) {
 	u.Respond(w, resp)
 }
 
-var GetContactsFor = func(w http.ResponseWriter, r *http.Request) {
+var GetOwnUserInfo = func(w http.ResponseWriter, r *http.Request) {
 
 	id := r.Context().Value("user").(uint)
-	data := models.GetContacts(id)
+	fmt.Print(id)
+	fmt.Print("\n")
+	data := models.GetUser(id)
 	resp := u.Message(true, "success")
 	resp["data"] = data
 	u.Respond(w, resp)

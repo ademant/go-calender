@@ -15,7 +15,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		notPostAuth := []string{"/api/user/new", "/api/user/login"} //List of endpoints that doesn't require auth
+		notPostAuth := []string{"/api/v1/user/login"} //List of endpoints that doesn't require auth
 		notGetAuth := []string{"/api/v1/location"} //List of endpoints that doesn't require auth
 		requestPath := r.URL.Path                               //current request path
 		requestMethod := r.Method
@@ -36,7 +36,7 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 					next.ServeHTTP(w, r)
 					return
 				}
-			}
+					}
 		}
 
 		response := make(map[string]interface{})
@@ -58,14 +58,15 @@ var JwtAuthentication = func(next http.Handler) http.Handler {
 			u.Respond(w, response)
 			return
 		}
-
+		
 		tokenPart := splitted[1] //Grab the token part, what we are truly interested in
 		tk := &models.Token{}
+		fmt.Print(tk)
 
 		token, err := jwt.ParseWithClaims(tokenPart, tk, func(token *jwt.Token) (interface{}, error) {
 			return []byte(os.Getenv("token_password")), nil
 		})
-
+		fmt.Print(token)
 		if err != nil { //Malformed token, returns with http code 403 as usual
 			response = u.Message(false, "Malformed authentication token")
 			w.WriteHeader(http.StatusForbidden)

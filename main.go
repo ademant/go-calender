@@ -10,21 +10,24 @@ import (
 )
 
 func main() {
-
+	controllers.DBRoleInit()
+	controllers.DBAccountInit()
+//	controllers.DBPermissionInit()
 //	router := mux.NewRouter()
 	router := http.NewServeMux()
 
-	router.HandleFunc("POST /api/role", controllers.CreateRole)
-	router.HandleFunc("GET /api/role/{id}", controllers.GetRole)
-	router.HandleFunc("POST /api/user/new", controllers.CreateAccount)
-	router.HandleFunc("POST /api/user/login", controllers.Authenticate)
+	router.HandleFunc("POST /api/v1/role", controllers.CreateRole)
+	router.HandleFunc("GET /api/v1/role/{id}", controllers.GetRole)
+	router.HandleFunc("POST /api/v1/user/new", controllers.CreateAccount)
+	router.HandleFunc("POST /api/v1/user/login", controllers.Authenticate)
+	router.HandleFunc("GET /api/v1/user/logout", controllers.DeAuthenticate)
 	router.HandleFunc("POST /api/contacts/new", controllers.CreateContact)
 	router.HandleFunc("POST /api/v1/location", controllers.CreateLocation)
 	router.HandleFunc("GET /api/v1/location", controllers.GetLocations)
 	router.HandleFunc("GET /api/v1/location/{id}", controllers.GetLocation)
 	router.HandleFunc("PATCH /api/v1/location/{id}", controllers.PatchLocation)
 	router.HandleFunc("DELETE /api/v1/location/{id}", controllers.DeleteLocation)
-	router.HandleFunc("GET /api/me/contacts", controllers.GetContactsFor) //  user/2/contacts
+	router.HandleFunc("GET /api/v1/me", controllers.GetOwnUserInfo) //  user/2/contacts
 
 //	router.Use(app.JwtAuthentication) //attach JWT auth middleware
 

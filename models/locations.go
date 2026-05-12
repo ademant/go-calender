@@ -13,6 +13,7 @@ type Location struct {
 	Room string `json:"room"`
 	Latitude float64 `json:"latitude"`
 	Longitude float64 `json:"longitude"`
+	URL string `json:"url"`
 }
 
 /*

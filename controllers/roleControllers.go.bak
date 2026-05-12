@@ -9,22 +9,17 @@ import (
 	"fmt"
 )
 
-var DBRoleInit = func() {
-//	initRole := &models.Role{Tier:0, Role:"admin"}
-//	GetDB().Where(&models.Role{Tier:0}).FirstOrCreate(&initRole)
-	role := &models.Role{}
-	role.DBRoleInit()
-}
-
 var CreateRole = func(w http.ResponseWriter, r *http.Request) {
-	role := &models.Role{}
-	err := json.NewDecoder(r.Body).Decode(role)
+
+	role := &models.Roles{}
+	err := json.NewDecoder(r.Body).Decode(role) //decode the request body into struct and failed if any error occur
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
-		u.Respond(w, u.Message(false, "Error while decoding request body"))
+		u.Respond(w, u.Message(false, "Invalid request"))
 		return
 	}
-	resp := role.Create()
+
+	resp := role.Create() //Create account
 	fmt.Print(resp["status"])
 	if resp["status"] == true {
 		w.WriteHeader(http.StatusCreated)
@@ -45,11 +40,10 @@ var GetRole = func(w http.ResponseWriter, r *http.Request) {
 	data := models.GetRole(uint(id))
 	if data == nil {
 		w.WriteHeader(http.StatusNotFound)
-		u.Respond(w, u.Message(false, "Location not found with ID: " + sid))
+		u.Respond(w, u.Message(false,"Role not found with ID: " + sid))
 		return
 	}
-
-	resp := u.Message(true, "success")
+	resp := u.Message(true,"success")
 	resp["data"] = data
-	u.Respond(w, resp)
+	u.Respond(w,resp)
 }

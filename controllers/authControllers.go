@@ -5,7 +5,13 @@ import (
 	"go-calender/models"
 	u "go-calender/utils"
 	"net/http"
+	"fmt"
 )
+
+var DBAccountInit = func() {
+	ac := &models.Account{}
+	ac.DBAccountInit()
+}
 
 var CreateAccount = func(w http.ResponseWriter, r *http.Request) {
 
@@ -28,7 +34,16 @@ var Authenticate = func(w http.ResponseWriter, r *http.Request) {
 		u.Respond(w, u.Message(false, "Invalid request"))
 		return
 	}
-
-	resp := models.Login(account.Email, account.Password)
+	fmt.Print(account.User)
+	resp := models.Login(account.User, account.Password)
 	u.Respond(w, resp)
 }
+
+var DeAuthenticate = func(w http.ResponseWriter, r *http.Request) {
+	id := r.Context().Value("user").(uint)
+	fmt.Print(id)
+	resp := models.Logout(id)
+	u.Respond(w,resp)
+
+}
+

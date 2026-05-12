@@ -6,17 +6,23 @@ import (
 )
 
 //a struct to rep user account
-type Roles struct {
+type Role struct {
 	gorm.Model
 	Tier uint `json:"Level" gorm:"unique"`
 	Role string `json:"Role"`
 }
 
+func (role *Role) DBRoleInit() {
+// Ensure admin role exist
+	initRole := Role{Tier:0, Role:"admin"}
+	GetDB().Where(Role{Tier:0}).FirstOrCreate(&initRole)
+}
+
 //Validate incoming user details...
-func (role *Roles) Validate() (map[string]interface{}, bool) {
+func (role *Role) Validate() (map[string]interface{}, bool) {
 
 	//Role name must be unique
-	temp := &Roles{}
+	temp := &Role{}
 
 	//check for errors and duplicate roles
 	err := GetDB().Table("roles").Where("role = ?", role.Role).First(temp).Error
@@ -30,7 +36,7 @@ func (role *Roles) Validate() (map[string]interface{}, bool) {
 	return u.Message(false, "Requirement passed"), true
 }
 
-func (role *Roles) Create() (map[string]interface{}) {
+func (role *Role) Create() (map[string]interface{}) {
 
 	if resp, ok := role.Validate(); !ok {
 		return resp
@@ -47,8 +53,8 @@ func (role *Roles) Create() (map[string]interface{}) {
 	return response
 }
 
-func GetRole(u uint) *Roles {
-	role := &Roles{}
+func GetRole(u uint) *Role {
+	role := &Role{}
 	GetDB().Table("roles").Where("id = ?", u).First(role)
 	if role.Role == "" { //User not found!
 		return nil

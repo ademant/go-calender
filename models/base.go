@@ -33,7 +33,7 @@ func init() {
 	}
 
 	db = conn
-	db.Debug().AutoMigrate(&Account{}, &Contact{}, &Location{})
+	db.Debug().AutoMigrate(&Account{}, &Contact{}, &Location{}, &Role{})
 }
 
 func GetDB() *gorm.DB {
